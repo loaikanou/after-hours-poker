@@ -154,7 +154,7 @@ export function LobbyScreen({
       <InstallNudge />
       <footer className="page-footer">
         <Brand compact />
-        <span>{t("footerLine")}</span>
+        <span>{t("footerLine")} · © 2026 Loai Kanou</span>
         <button type="button" className="btn btn-ghost share-app" onClick={() => void shareApp()}>
           {copied ? t("linkCopied") : t("shareApp")} <span aria-hidden="true">↗</span>
         </button>

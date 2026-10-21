@@ -2,12 +2,33 @@
   "name": "after-hours",
   "private": true,
   "version": "2.0.0",
-  "type": "module",
+  "description": "Private realtime card club — Texas Hold’em, Tarneeb and Trix with friends. React + Convex PWA.",
+  "license": "MIT",
   "author": {
     "name": "Loai Kanou",
     "email": "loai.net@gmail.com",
-    "url": "https://github.com/loaikanou/"
+    "url": "https://github.com/loaikanou"
   },
+  "homepage": "https://loaikanou.github.io/after-hours-poker/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loaikanou/after-hours-poker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/loaikanou/after-hours-poker/issues"
+  },
+  "keywords": [
+    "poker",
+    "texas-holdem",
+    "tarneeb",
+    "trix",
+    "card-game",
+    "multiplayer",
+    "pwa",
+    "convex",
+    "react"
+  ],
+  "type": "module",
   "scripts": {
     "dev": "convex dev",
     "web": "vite",

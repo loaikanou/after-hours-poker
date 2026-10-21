@@ -76,6 +76,8 @@ function structuredData(url: string) {
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     image: url ? `${url}og-image.jpg` : undefined,
     screenshot: url ? `${url}screenshots/table-wide.png` : undefined,
+    author: { "@type": "Person", name: "Loai Kanou", url: "https://github.com/loaikanou" },
+    license: "https://opensource.org/licenses/MIT",
     playMode: "MultiPlayer",
     numberOfPlayers: { "@type": "QuantitativeValue", minValue: 2, maxValue: 6 },
   };

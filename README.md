@@ -4,6 +4,9 @@ A private, realtime card club for you and your friends. Spin up a table, share a
 
 Built as an installable PWA on a [Convex](https://convex.dev) backend, so every seat at the table updates live.
 
+[![CI](https://github.com/loaikanou/after-hours-poker/actions/workflows/ci.yml/badge.svg)](https://github.com/loaikanou/after-hours-poker/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-d2ab68.svg)](LICENSE)
+
 ![A live Texas Hold'em table](public/screenshots/table-wide.png)
 
 ## Games
@@ -278,3 +281,15 @@ Serve `dist/` from any static host (Netlify, Cloudflare Pages, …). If the site
 - Keep game rules in `convex/model/` as pure functions and cover them with tests; `convex/tables.ts` should stay a thin layer that loads, applies, and saves.
 - New UI text goes in both languages in `src/i18n.ts`; the `ar` table is type-checked against `en`, so a missing key fails the build.
 - Local `AGENTS.md` / `CLAUDE.md` files (git-ignored) repeat the Convex instruction for agentic tools.
+
+## Author
+
+**Loai Kanou** — [github.com/loaikanou](https://github.com/loaikanou)
+
+Bug reports and ideas are welcome in [Issues](https://github.com/loaikanou/after-hours-poker/issues).
+
+## License
+
+[MIT](LICENSE) © 2026 Loai Kanou
+
+This licence covers the code, the generated icons, and the character and card artwork in this repository. The fonts (Inter, Playfair Display, El Messiri) are loaded from Google Fonts under the SIL Open Font License, and npm dependencies keep their own licences.
