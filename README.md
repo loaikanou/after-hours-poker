@@ -46,8 +46,8 @@ Chips and scores are for fun only — there is no wagering, real money, or cash-
 - **Backend:** Convex — queries, mutations, scheduled turn timers, an hourly cleanup cron
 - **Tests:** Vitest 5 with `convex-test` and `@edge-runtime/vm`
 - **Extras:** `qrcode` (loaded on demand) for invite codes; a build-stamped service worker
-- **Hosting:** GitHub Pages or Vercel (static frontend) + Convex (backend)
-- **CI/CD:** GitHub Actions — tests on every PR, automatic deploy from `main`
+- **Hosting:** Vercel (static frontend) + Convex (backend)
+- **CI/CD:** GitHub Actions runs the tests; Vercel builds and deploys
 
 ## Requirements
 
@@ -89,9 +89,9 @@ The Convex CLI manages these in `.env.local` (git-ignored). Only `VITE_CONVEX_UR
 | `VITE_CONVEX_URL` | App | Convex deployment URL the client connects to. Inlined at build time. |
 | `CONVEX_DEPLOYMENT` | Convex CLI | Which deployment `convex dev` / `convex deploy` target. |
 | `VITE_CONVEX_SITE_URL` | Convex CLI | The deployment's HTTP-actions endpoint. Written automatically; unused by the app. |
-| `CONVEX_DEPLOY_KEY` | CI / Vercel | Lets the deploy pipeline push the backend. Store it as a secret — see [Deployment](#deployment). |
-| `BASE_PATH` | Build | Public path the site is served from. Defaults to `/`; the Pages workflow sets `/<repo>/`. |
-| `SITE_URL` | Build | Absolute public URL, used for canonical links, social previews and the sitemap. The Pages workflow sets it, and on Vercel it falls back to the production domain. Without it, those URLs are relative and no sitemap is written. |
+| `CONVEX_DEPLOY_KEY` | Vercel | Lets Vercel push the backend on deploy. Store it as a Vercel environment variable — see [Deployment](#deployment). |
+| `BASE_PATH` | Build | Public path the site is served from. Defaults to `/`; set it only to host under a subpath. |
+| `SITE_URL` | Build | Absolute public URL, used for canonical links, social previews and the sitemap. On Vercel it defaults to the production domain; set it for a custom domain. Without it, those URLs are relative and no sitemap is written. |
 
 ## Project structure
 
@@ -126,8 +126,7 @@ scripts/
   icons.mjs            Draws the icon family as SVG
   rasterize-icons.mjs  Renders the SVGs to PNG with headless Chrome
 .github/
-  workflows/ci.yml     Typecheck, tests, and both build layouts on every PR
-  workflows/deploy.yml main → tests → Convex deploy → GitHub Pages
+  workflows/ci.yml     Typecheck and tests on every push and PR
   dependabot.yml       Weekly npm and Actions updates
 vite.config.ts         Build config, base path, service-worker stamping plugin
 vercel.json            Vercel build command and cache/security headers
@@ -189,7 +188,7 @@ The app is a client-rendered single-page app. What crawlers and link scrapers se
 - **Speed**: fonts load without blocking rendering.
 - **Lighthouse (mobile)**: SEO 100, Accessibility 100, Best Practices 100, Performance 98.
 
-After the first deploy, check the preview with the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) or [opengraph.xyz](https://www.opengraph.xyz/), and submit `sitemap.xml` in [Google Search Console](https://search.google.com/search-console). For a GitHub Pages *project* site, crawlers only read `robots.txt` at the domain root. Submit the sitemap through Search Console, or use a custom domain.
+After the first deploy, check the preview with the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) or [opengraph.xyz](https://www.opengraph.xyz/), and submit `sitemap.xml` in [Google Search Console](https://search.google.com/search-console).
 
 ## Testing
 
@@ -203,42 +202,23 @@ npm test
 
 ## CI/CD
 
-Two GitHub Actions workflows live in `.github/workflows/`:
-
-| Workflow | Runs on | What it does |
+| Where | Runs on | What it does |
 | --- | --- | --- |
-| **CI** (`ci.yml`) | Pull requests, pushes to other branches, manual | `npm ci` → typecheck → tests → build at the root **and** under a Pages subpath → checks the service worker was stamped. |
-| **Deploy** (`deploy.yml`) | Pushes to `main`, manual | Runs CI first. If it passes: deploys the Convex functions to production, builds the site against that deployment, and publishes it to GitHub Pages. |
+| **GitHub Actions**: CI (`.github/workflows/ci.yml`) | Every push and pull request | `npm ci` → typecheck → tests. |
+| **Vercel** | Every push | Builds the site. Pushes to `main` also deploy the Convex functions and go to production; other branches and pull requests get a preview deployment. |
 
-Deploys never cancel each other mid-way; a newer push waits for the running one. Dependabot opens weekly PRs for npm packages (minor and patch updates grouped into one) and for the Actions themselves, and CI tests each one.
+There's no build in GitHub Actions: Vercel builds every commit, so a change that doesn't build fails its Vercel deployment and shows up on the pull request. Dependabot opens weekly update PRs for npm packages (minor and patch updates grouped into one) and for the Actions themselves, and CI tests each one.
 
 ## Deployment
 
-The frontend is a static bundle, and the backend is Convex. Every deploy runs `npx convex deploy --cmd 'npm run build'`, which pushes the functions to the production deployment and then builds the frontend against that same deployment. As a result, the client and the server always match.
-
-You'll need a **Convex production deploy key** for any option: in the [Convex dashboard](https://dashboard.convex.dev/), open your project's production deployment → *Settings → General* → *Generate Production Deploy Key*, with the `deployment:deploy` permission.
-
-### GitHub Pages (via GitHub Actions)
-
-The site works as a Pages project site (`https://<user>.github.io/<repo>/`) or with a custom domain. The base path is detected automatically.
-
-1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions**.
-2. **Settings → Environments → New environment** named `production`. Add the secret **`CONVEX_DEPLOY_KEY`** with your production deploy key. Optionally, restrict the environment to the `main` branch or require a reviewer.
-3. Push to `main`, or run **Deploy** manually from the *Actions* tab. The published URL appears on the `github-pages` environment.
-
-Why it works on Pages:
-- The app uses `?table=CODE` query strings rather than client-side routes, so there are no 404s to work around.
-- Every public URL, plus the service worker's scope and cache list, is built from `BASE_PATH`.
-- The manifest uses relative URLs.
-
-Pages can't set custom headers, but nothing depends on them: the service worker is registered with `updateViaCache: "none"`, so new versions are always picked up.
+The site is deployed by **Vercel** only. The frontend is a static bundle, and the backend is Convex. Every production build runs `npx convex deploy --cmd 'npm run build'`. That pushes the functions to the Convex production deployment and then builds the frontend against that same deployment, so the client and server always match.
 
 ### Vercel
 
-[vercel.json](vercel.json) is already configured; you only need the deploy key.
+[vercel.json](vercel.json) is already configured; you only need a **Convex production deploy key**. In the [Convex dashboard](https://dashboard.convex.dev/), open your project's production deployment → *Settings → General* → *Generate Production Deploy Key*, with the `deployment:deploy` permission.
 
-1. **Add the key to Vercel**: *Settings → Environment Variables* → `CONVEX_DEPLOY_KEY`, scoped to **Production**. For backend previews per branch, also add a *Preview* deploy key, scoped to **Preview**.
-2. **Deploy**: connect the project to the GitHub repository so Vercel redeploys on every push, or run:
+1. **Add the key to Vercel**: *Settings → Environment Variables* → `CONVEX_DEPLOY_KEY`, scoped to **Production**. For a separate backend per preview branch, also add a *Preview* deploy key, scoped to **Preview**.
+2. **Connect the repository**: import the GitHub repo in Vercel. From then on every push to `main` deploys to production. To deploy by hand instead, run:
 
    ```bash
    npx vercel --prod
@@ -250,11 +230,9 @@ Vercel runs:
 npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
 ```
 
-`convex deploy` sets `VITE_CONVEX_URL` to the production URL for the duration of the build, so you don't set it yourself. The `--cmd-url-env-var-name` flag matters: Convex's default variable is `CONVEX_URL`, which this app doesn't read.
+`convex deploy` sets `VITE_CONVEX_URL` to the production URL for the duration of the build, so you don't set it yourself. The `--cmd-url-env-var-name` flag matters: Convex's default variable is `CONVEX_URL`, which this app doesn't read. `SITE_URL` is filled in automatically from your Vercel production domain. Set it yourself only if you use a custom domain.
 
-`vercel.json` also sets the caching rules the PWA depends on: hashed assets are immutable, `sw.js`, `index.html`, and the manifest are always revalidated, and icons are cached for a week. It adds basic security headers too.
-
-> **Both at once?** It's safe for GitHub Pages and Vercel to deploy the same `main`. Both push identical functions to the same Convex deployment. If you only want one frontend, disable the other: turn off Vercel's Git integration, or delete `deploy.yml`.
+`vercel.json` also sets the caching rules the PWA depends on: hashed assets are immutable, `sw.js`, `index.html` and the manifest are always revalidated, and icons are cached for a week. It adds basic security headers too.
 
 ### Other static hosts
 
@@ -269,10 +247,7 @@ Serve `dist/` from any static host (Netlify, Cloudflare Pages, …). If the site
 
 - **Setup screen instead of the lobby** — `VITE_CONVEX_URL` is missing. Run `npm run dev` once, then restart `npm run web`.
 - **An old version keeps loading after a deploy** — the installed app shows an *Update* toast; tap it. In a browser tab, closing every tab of the app also picks up the new version.
-- **Deploy workflow fails at "Check for the Convex deploy key"**: add `CONVEX_DEPLOY_KEY` to the `production` environment's secrets. It goes there, not under repository variables.
-- **Deploy workflow fails at "Configure GitHub Pages" with "Get Pages site failed" / "Resource not accessible by integration"**:
-  - Pages isn't enabled for Actions yet. Set *Settings → Pages → Build and deployment → Source* to **GitHub Actions**, then re-run the workflow.
-  - On a **private** repository, Pages needs a paid GitHub plan (Pro, Team or Enterprise). Otherwise, make the repository public or deploy with Vercel instead.
+- **Vercel build fails at `convex deploy`**: `CONVEX_DEPLOY_KEY` is missing or scoped to the wrong environment. Add it under *Settings → Environment Variables* for **Production**, and for **Preview** if preview builds should deploy a backend too.
 - **No sound** — browsers allow audio only after you interact with the page; tap anywhere once. Check the speaker toggle in the top bar.
 - **Install button does nothing on desktop Safari or Firefox** — those browsers have no install prompt; the button shows instructions instead.
 

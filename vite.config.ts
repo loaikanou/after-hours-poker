@@ -128,8 +128,8 @@ ${entry(`${url}?lang=ar`)}
 }
 
 /**
- * Public path the app is served from. "/" for Vercel or a custom domain;
- * "/<repo>/" for a GitHub Pages project site (set by the deploy workflow).
+ * Public path the app is served from: "/" on Vercel. Set BASE_PATH only when
+ * hosting under a subpath elsewhere (e.g. "/after-hours/").
  */
 function basePath(): string {
   const raw = process.env.BASE_PATH?.trim() || "/";

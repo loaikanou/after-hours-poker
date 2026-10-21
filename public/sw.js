@@ -13,7 +13,7 @@
  * Convex traffic (WebSocket + API) is never intercepted.
  *
  * All paths are relative to the worker's scope, so the same file works at the
- * domain root (Vercel) and under a subpath (GitHub Pages: /<repo>/).
+ * domain root (Vercel) and under a subpath if BASE_PATH is set at build time.
  */
 const BUILD_ID = "dev";
 const PRECACHE = [/* __PRECACHE__ */];
@@ -23,7 +23,7 @@ const RUNTIME = "after-hours-runtime-v1";
 const FONTS = "after-hours-fonts-v1";
 const KEEP = new Set([SHELL, RUNTIME, FONTS]);
 const NAV_TIMEOUT_MS = 3500;
-/** "/" on Vercel, "/<repo>/" on GitHub Pages. */
+/** "/" on Vercel; the subpath when built with BASE_PATH. */
 const BASE = new URL(self.registration.scope).pathname;
 
 self.addEventListener("install", (event) => {
