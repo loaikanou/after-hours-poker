@@ -1,0 +1,54 @@
+{
+  "id": "./",
+  "name": "After Hours — Card Club",
+  "short_name": "After Hours",
+  "description": "Private realtime card tables — Texas Hold’em, Tarneeb and Trix with friends. No accounts, no downloads, just for fun.",
+  "lang": "en",
+  "dir": "auto",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0b1410",
+  "theme_color": "#0b1410",
+  "categories": ["games", "entertainment", "social"],
+  "prefer_related_applications": false,
+  "launch_handler": { "client_mode": ["navigate-existing", "auto"] },
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "New poker table",
+      "short_name": "Poker",
+      "description": "Host a Texas Hold’em table",
+      "url": "./?new=poker&source=shortcut",
+      "icons": [{ "src": "icons/shortcut-poker.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "New Tarneeb table",
+      "short_name": "Tarneeb",
+      "description": "Host a four-player Tarneeb match",
+      "url": "./?new=tarneeb&source=shortcut",
+      "icons": [{ "src": "icons/shortcut-tarneeb.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "New Trix tournament",
+      "short_name": "Trix",
+      "description": "Host a four-player Trix tournament",
+      "url": "./?new=trix&source=shortcut",
+      "icons": [{ "src": "icons/shortcut-trix.png", "sizes": "96x96", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    { "src": "screenshots/table-wide.png", "sizes": "1280x800", "type": "image/png", "form_factor": "wide", "label": "A live Texas Hold’em table" },
+    { "src": "screenshots/lobby-wide.png", "sizes": "1280x800", "type": "image/png", "form_factor": "wide", "label": "Pick a game and a character" },
+    { "src": "screenshots/table-narrow.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "Poker on your phone" },
+    { "src": "screenshots/tarneeb-narrow.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "Tarneeb with your partner across the table" }
+  ]
+}

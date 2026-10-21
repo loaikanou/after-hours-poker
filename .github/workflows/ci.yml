@@ -1,0 +1,52 @@
+name: CI
+
+# Pushes to main are tested by deploy.yml (which calls this workflow), so they are skipped here.
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit and Convex function tests
+        run: npm test
+
+      # Prove both hosting layouts build: domain root (Vercel) and a Pages subpath.
+      - name: Build (root)
+        run: npm run build
+
+      - name: Build (GitHub Pages subpath)
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
+      - name: Check the service worker was stamped
+        run: |
+          grep -q 'const BUILD_ID = "dev"' dist/sw.js && { echo "::error::sw.js was not stamped with a build id"; exit 1; }
+          grep -q '__PRECACHE__' dist/sw.js && { echo "::error::sw.js precache list was not injected"; exit 1; }
+          echo "sw.js OK"

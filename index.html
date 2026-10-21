@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>After Hours — Play Poker, Tarneeb &amp; Trix Online with Friends</title>
+    <meta name="description" content="Free private card tables for you and your friends: Texas Hold’em, Tarneeb and Trix, live in the browser. Share a link, no sign-up, no downloads — in English and Arabic." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="%SITE_URL%" />
+    <link rel="alternate" hreflang="en" href="%SITE_URL%" />
+    <link rel="alternate" hreflang="ar" href="%SITE_URL%?lang=ar" />
+    <link rel="alternate" hreflang="x-default" href="%SITE_URL%" />
+
+    <!-- Link previews (WhatsApp, iMessage, Slack, Facebook, X, Discord…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="After Hours" />
+    <meta property="og:url" content="%SITE_URL%" />
+    <meta property="og:title" content="After Hours — Poker, Tarneeb &amp; Trix with friends" />
+    <meta property="og:description" content="Pull up a chair. Private card tables you share with a link — live, free, no sign-up." />
+    <meta property="og:image" content="%SITE_URL%og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="After Hours: three playing cards on green felt with the words Good cards. Better company." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="After Hours — Poker, Tarneeb &amp; Trix with friends" />
+    <meta name="twitter:description" content="Private card tables you share with a link — live, free, no sign-up." />
+    <meta name="twitter:image" content="%SITE_URL%og-image.jpg" />
+    <meta name="twitter:image:alt" content="After Hours: three playing cards on green felt." />
+
+    <!-- App / PWA -->
+    <meta name="theme-color" content="#0b1410" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f1e8" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="application-name" content="After Hours" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="After Hours" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+
+    <!-- Fonts load without blocking first paint; system fonts stand in until they arrive. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" /></noscript>
+
+    <script type="application/ld+json">%STRUCTURED_DATA%</script>
+
+    <!-- Styles for the static splash below, so it looks right before the app bundle loads. -->
+    <style>
+      body { margin: 0; background: #0b1410; color: #efe9dc; font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .splash { min-height: 100dvh; display: grid; place-content: center; gap: 18px; padding: 32px 20px; text-align: center; }
+      .splash img { margin: 0 auto; border-radius: 18px; animation: splash 1.8s ease-in-out infinite; }
+      .splash h1 { margin: 0; font: 500 clamp(34px, 6vw, 56px)/1.1 "Playfair Display", Georgia, serif; }
+      .splash h1 em { color: #d2ab68; }
+      .splash p { max-width: 520px; margin: 0 auto; color: #b9bfb2; line-height: 1.6; }
+      .splash ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 13px; }
+      .splash li { padding: 6px 14px; border: 1px solid rgba(210, 171, 104, 0.4); border-radius: 999px; }
+      @keyframes splash { 50% { transform: scale(1.05); } }
+      @media (prefers-reduced-motion: reduce) { .splash img { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Replaced by the app on load; this is what crawlers and link scrapers without JavaScript see. -->
+      <main class="splash">
+        <img src="/icons/icon.svg" alt="After Hours" width="88" height="88" />
+        <h1>Good cards. <em>Better company.</em></h1>
+        <p>After Hours is a free, private card club. Open a table, share the link, and play live with friends on any device — no accounts, no downloads, no real money.</p>
+        <ul aria-label="Games">
+          <li>♠ Texas Hold’em poker · 2–6 players</li>
+          <li>♦ Tarneeb · 4 players in teams</li>
+          <li>♥ Trix · 4-player kingdoms</li>
+          <li>English · العربية</li>
+        </ul>
+      </main>
+    </div>
+    <noscript><p style="text-align:center">After Hours needs JavaScript to deal the cards.</p></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "after-hours",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "author": {
+    "name": "Loai Kanou",
+    "email": "loai.net@gmail.com",
+    "url": "https://github.com/loaikanou/"
+  },
+  "scripts": {
+    "dev": "convex dev",
+    "web": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc --noEmit && vite build",
+    "deploy": "convex deploy",
+    "icons": "node scripts/icons.mjs && node scripts/rasterize-icons.mjs && node scripts/og-image.mjs"
+  },
+  "dependencies": {
+    "convex": "^1.47.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@edge-runtime/vm": "^5.0.0",
+    "@types/node": "^24.19.2",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "convex-test": "^0.0.63",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  },
+  "allowScripts": {
+    "esbuild@0.27.0": true,
+    "fsevents@2.3.3": true
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

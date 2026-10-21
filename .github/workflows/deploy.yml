@@ -1,0 +1,82 @@
+name: Deploy
+
+# main → tests → Convex production deploy → static build against it → GitHub Pages.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never cancel a deploy halfway; queue the next one instead.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Deploy Convex + build site
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    # configure-pages reads the Pages settings (base path, URL) through the API.
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check for the Convex deploy key
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+        run: |
+          if [ -z "$CONVEX_DEPLOY_KEY" ]; then
+            echo "::error::Add a CONVEX_DEPLOY_KEY secret (Production deploy key from the Convex dashboard) to the 'production' environment."
+            exit 1
+          fi
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      # `convex deploy` pushes the functions, then runs the build with VITE_CONVEX_URL
+      # pointing at the production deployment. BASE_PATH is "/<repo>/" for a project
+      # site, or "/" when the site uses a custom domain.
+      - name: Deploy Convex functions and build
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+          # Absolute URL for canonical links, social previews and the sitemap.
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  pages:
+    name: Publish to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

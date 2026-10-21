@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="felt" cx="50%" cy="36%" r="78%">
+      <stop offset="0" stop-color="#32704f"/><stop offset=".58" stop-color="#18452f"/><stop offset="1" stop-color="#0a2117"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4dca6"/><stop offset="1" stop-color="#bf8f46"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ece3cf"/>
+    </linearGradient>
+    <mask id="moon"><rect width="512" height="512" fill="#fff"/><circle cx="414" cy="96" r="44" fill="#000"/></mask>
+    <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity=".42"/>
+    </filter>
+  </defs><rect width="512" height="512" fill="url(#felt)"/><g transform="translate(256 262) scale(0.86) translate(-256 -262)"><circle cx="392" cy="116" r="44" fill="url(#gold)" mask="url(#moon)"/>
+  <circle cx="122" cy="96" r="5" fill="#f4dca6" opacity=".8"/><circle cx="156" cy="132" r="3" fill="#f4dca6" opacity=".6"/><circle cx="452" cy="196" r="3.5" fill="#f4dca6" opacity=".6"/>
+  <g transform="rotate(-13 219 406)" filter="url(#drop)">
+    <rect x="134" y="166" width="170" height="236" rx="22" fill="url(#face)"/>
+    <rect x="140" y="172" width="158" height="224" rx="17" fill="none" stroke="#d9cfb8" stroke-width="2"/>
+    <path d="M50 92C20 68 5 52 5 32 5 17 16 7 30 7c10 0 17 6 20 14 3-8 10-14 20-14 14 0 25 10 25 25 0 20-15 36-45 60Z" transform="translate(150 184) scale(0.3)" fill="#c0362f"/>
+    <path d="M50 92C20 68 5 52 5 32 5 17 16 7 30 7c10 0 17 6 20 14 3-8 10-14 20-14 14 0 25 10 25 25 0 20-15 36-45 60Z" transform="translate(258 354) scale(0.3)" fill="#c0362f"/>
+    <path d="M50 92C20 68 5 52 5 32 5 17 16 7 30 7c10 0 17 6 20 14 3-8 10-14 20-14 14 0 25 10 25 25 0 20-15 36-45 60Z" transform="translate(174 239) scale(0.9)" fill="#c0362f"/>
+  </g>
+  <g transform="rotate(11 293 390)" filter="url(#drop)">
+    <rect x="208" y="150" width="170" height="236" rx="22" fill="url(#face)"/>
+    <rect x="214" y="156" width="158" height="224" rx="17" fill="none" stroke="#d9cfb8" stroke-width="2"/>
+    <path d="M50 4C50 4 8 38 8 61c0 17 17 26 32 19 4-2 6-5 7-7-1 9-5 17-14 22h34c-9-5-13-13-14-22 1 2 3 5 7 7 15 7 32-2 32-19C92 38 50 4 50 4Z" transform="translate(224 168) scale(0.3)" fill="#1c231d"/>
+    <path d="M50 4C50 4 8 38 8 61c0 17 17 26 32 19 4-2 6-5 7-7-1 9-5 17-14 22h34c-9-5-13-13-14-22 1 2 3 5 7 7 15 7 32-2 32-19C92 38 50 4 50 4Z" transform="translate(332 338) scale(0.3)" fill="#1c231d"/>
+    <path d="M50 4C50 4 8 38 8 61c0 17 17 26 32 19 4-2 6-5 7-7-1 9-5 17-14 22h34c-9-5-13-13-14-22 1 2 3 5 7 7 15 7 32-2 32-19C92 38 50 4 50 4Z" transform="translate(248 223) scale(0.9)" fill="#1c231d"/>
+  </g></g></svg>
