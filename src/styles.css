@@ -710,7 +710,7 @@ button:disabled { cursor: not-allowed; }
 
 .bet-stack {
   position: absolute;
-  z-index: 3;
+  z-index: 7;
   display: flex;
   align-items: center;
   transform: translate(-50%, -50%);
@@ -1331,3 +1331,220 @@ button:disabled { cursor: not-allowed; }
 .share-email svg { color: var(--gold); }
 .share-email:hover { border-color: var(--gold); }
 .page-footer .share-app { font-size: 12px; }
+
+/* ==========================================================================
+   Mobile
+   Phones get an app layout for the game: the table flexes to fill whatever
+   height the controls leave, so the whole game fits on one screen.
+   ========================================================================== */
+
+html { touch-action: manipulation; } /* no double-tap zoom, no tap delay */
+.input { font-size: 16px; }          /* iOS zooms the page into inputs smaller than 16px */
+
+/* Game UI isn't text: no long-press selection or callouts while tapping cards. */
+.game-shell { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.game-shell input, .game-shell .modal { -webkit-user-select: text; user-select: text; }
+
+/* Touch screens: comfortable targets (Apple 44pt / Material 48dp guidance). */
+@media (pointer: coarse) {
+  .icon-button { min-width: 44px; height: 44px; }
+  .code-button, .install-button { height: 44px; }
+  .btn-ghost { min-height: 44px; }
+  .chip-button { height: 40px; padding: 0 14px; }
+  .raise-slider { height: 44px; }
+  .raise-slider::-webkit-slider-thumb { width: 28px; height: 28px; margin-top: -11px; }
+  .raise-slider::-moz-range-thumb { width: 22px; height: 22px; }
+  .modal-close { width: 44px; height: 44px; }
+}
+
+/* Hover effects stick after a tap on touch screens; only lift on real hover. */
+@media (hover: none) {
+  .game-option:hover, .avatar-option:hover, .contract-button:hover:not(:disabled),
+  .share-chip:hover, .suit-button:hover:not(:disabled) { transform: none; }
+  .avatar-option.selected { transform: scale(1.08); }
+  .hand-fan.playable .hand-card.legal:hover:not(:disabled) { transform: translateY(-12px); }
+  .hand-card:active:not(:disabled) .playing-card { transform: scale(0.96); }
+}
+
+/* ---------- Phones, portrait ---------- */
+@media (max-width: 700px) {
+  /* One screen, no page scroll; the shell scrolls only if a panel truly can't fit. */
+  html:has(.game-shell) { overscroll-behavior: none; }
+  .game-shell {
+    height: 100dvh;
+    min-height: 0;
+    padding: env(safe-area-inset-top) max(8px, env(safe-area-inset-right)) 0 max(8px, env(safe-area-inset-left));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .game-topbar { min-height: 52px; gap: 6px; padding-top: 0; }
+  .game-topbar .brand { display: none; }
+  .table-title h1 { font-size: 15px; }
+  .leave-button { font-size: 0; min-width: 44px; padding: 0; }
+  .leave-button span { font-size: 18px; }
+
+  /* The felt takes the space that is left and sizes itself from it. */
+  .table-stage {
+    --ratio: 0.84;
+    flex: 1 1 0;
+    min-height: 220px;
+    padding: 0;
+    container-type: size;
+    display: grid;
+    place-items: center;
+  }
+  .felt { width: min(calc(100cqw - 72px), calc((100cqh - 92px) * var(--ratio))); margin-top: 18px; }
+  .seat-plate { backdrop-filter: none; }
+
+  .turn-timer { margin: 2px auto 6px; padding: 4px 12px; gap: 8px; }
+  .turn-timer-label { display: none; }
+
+  /* Compact one-line scoreboards. */
+  .scoreboard { gap: 6px; margin-bottom: 6px; }
+  .team-score { flex: 1 1 0; padding: 6px 10px 9px; }
+  .team-faces { display: none; }
+  .team-text { display: flex; align-items: baseline; gap: 6px; }
+  .team-text strong { font-size: 18px; }
+  .score-meta { font-size: 11px; }
+  .trix-standings { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+  .standing { grid-template-columns: 1fr; justify-items: center; gap: 0; padding: 5px 4px; font-size: 10px; }
+  .standing .avatar-art { display: none; }
+  .standing strong { font-size: 13px; }
+  .contract-chips { display: none; }
+
+  .hand-fan { padding-top: 14px; margin-bottom: 6px; gap: 4px; }
+  .hand-fan.playable .hand-card.legal { transform: translateY(-8px); }
+
+  /* The seat already shows your name and stack, so the dock is all controls. */
+  .action-dock { margin-top: 0; padding: 10px; border-radius: 14px; margin-bottom: max(8px, env(safe-area-inset-bottom)); }
+  .dock-me { display: none; }
+  .poker-controls { gap: 8px; }
+  .raise-panel { gap: 6px; }
+  .action-buttons .btn { min-height: 50px; font-size: 13px; }
+
+  /* Status text lives on the felt; the footer only appears to report an error. */
+  .game-footer:not(:has(.footer-error)) { display: none; }
+  .game-footer {
+    position: fixed;
+    z-index: 40;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + 96px);
+    transform: translateX(-50%);
+    min-height: 0;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid color-mix(in srgb, var(--danger) 50%, transparent);
+    box-shadow: var(--shadow-md);
+  }
+  .game-footer > span:last-child { display: none; }
+
+  /* Lobby: get to the form faster. */
+  .hero-copy { padding: 28px 0 0; }
+  .hero-copy h1 { margin: 12px 0 16px; }
+  .hero-art { height: 210px; }
+  .art-card .playing-card.lg { --cw: 84px; }
+  .lobby { padding: 28px 0 40px; }
+}
+
+/* ---------- Phones, landscape: table left, controls right ---------- */
+@media (orientation: landscape) and (max-height: 520px) {
+  html:has(.game-shell) { overscroll-behavior: none; }
+  .game-shell {
+    max-width: none;
+    height: 100dvh;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(260px, 36vw, 360px);
+    grid-template-rows: auto auto auto 1fr auto;
+    column-gap: 10px;
+    padding: 0 max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left));
+    overflow: hidden;
+  }
+  .game-topbar { grid-column: 2; grid-row: 1; min-height: 50px; gap: 6px; border-bottom: 0; }
+  .game-topbar .brand, .table-title .eyebrow, .preferences-bar.compact .icon-button:first-child { display: none; }
+  .table-title h1 { font-size: 15px; }
+  .code-button { font-size: 0; gap: 0; padding-inline-start: 6px; }
+  .code-button > span { display: none; }
+  .code-button code { font-size: 11px; }
+  .leave-button { font-size: 0; min-width: 44px; padding: 0; }
+  .leave-button span { font-size: 18px; }
+
+  .table-stage {
+    --ratio: 1.75;
+    grid-column: 1;
+    grid-row: 1 / -1;
+    min-height: 0;
+    padding: 0;
+    container-type: size;
+    display: grid;
+    place-items: center;
+  }
+  .felt { width: min(calc(100cqw - 90px), calc((100cqh - 96px) * var(--ratio))); margin-top: 16px; }
+  .felt-center { inset: 16% 20% 36%; gap: 3px; }
+  .seat { --avatar: clamp(38px, 6cqw, 52px); }
+  .seat-plate { backdrop-filter: none; min-width: 60px; padding: 2px 8px 3px; }
+  .seat-name { font-size: 11px; }
+  .seat-meta { font-size: 10px; }
+  .playing-card.sm { --cw: 34px; }
+  .board-slot { width: 34px; height: 48px; }
+  .hole-cards.mine .playing-card { --cw: 44px; }
+
+  .turn-timer { grid-column: 2; grid-row: 2; width: 100%; margin: 0 0 6px; padding: 4px 10px; gap: 8px; }
+  .turn-timer-label, .turn-timer-hint { display: none; }
+  .scoreboard { grid-column: 2; grid-row: 3; width: 100%; gap: 6px; margin-bottom: 6px; }
+  .team-score { flex: 1 1 0; padding: 6px 8px 9px; }
+  .team-faces, .contract-chips, .standing .avatar-art { display: none; }
+  .team-text strong { font-size: 16px; }
+  .trix-standings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+  .standing { padding: 4px 8px; font-size: 11px; }
+  .score-meta { font-size: 11px; }
+
+  .hand-fan { grid-column: 2; grid-row: 4; align-self: end; padding-top: 12px; margin: 0 0 6px; }
+  .hand-cards { padding: 0; }
+  .hand-card .playing-card { --cw: 44px; }
+  .hand-card + .hand-card { margin-inline-start: -23px; }
+  .hand-fan.playable .hand-card.legal { transform: translateY(-8px); }
+
+  .action-dock {
+    grid-column: 2;
+    grid-row: 5;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin: 0 0 max(8px, env(safe-area-inset-bottom));
+    padding: 10px;
+  }
+  .dock-me { display: none; }
+  .raise-panel { flex-direction: column; align-items: stretch; gap: 4px; }
+  .preset-row .chip-button { flex: 1; padding: 0 6px; }
+  .action-buttons .btn { padding: 0 8px; font-size: 12px; min-height: 46px; }
+  .btn kbd { display: none; }
+  .contract-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .contract-button { min-height: 50px; padding: 6px 8px; }
+  .suit-button { width: 52px; height: 52px; }
+  .dock-row { gap: 8px; }
+  .dock-actions { margin-inline-start: 0; width: 100%; }
+  .dock-actions .btn { flex: 1; }
+
+  .game-footer:not(:has(.footer-error)) { display: none; }
+  .game-footer {
+    position: fixed;
+    z-index: 40;
+    left: 12px;
+    bottom: 12px;
+    min-height: 0;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid color-mix(in srgb, var(--danger) 50%, transparent);
+  }
+  .game-footer > span:last-child { display: none; }
+}
+
+/* In the stacked (column) raise panel, `flex: 1` would collapse the slider to its track height. */
+@media (max-width: 700px), (orientation: landscape) and (max-height: 520px) {
+  .raise-panel .raise-slider { flex: none; width: 100%; }
+}

@@ -5,7 +5,7 @@ import { errorMessage } from "./i18n";
 import { usePreferences } from "./preferences";
 import { cardKey, gameNameKeys } from "./lib/format";
 import { useDocumentMeta } from "./hooks/useDocumentMeta";
-import { play } from "./lib/sound";
+import { buzz, play } from "./lib/sound";
 import {
   playerKey, rememberAvatar, rememberPlayerName, rememberTableCode, savedAvatar, savedName, savedTableCode,
 } from "./lib/session";
@@ -131,7 +131,10 @@ function Screens() {
   }
 
   const onAction = useCallback(
-    (action: PokerAction | GameAction, values: ActionValues = {}) => run(() => act({ code: roomCode, playerKey, action, ...values })),
+    (action: PokerAction | GameAction, values: ActionValues = {}) => {
+      buzz(10); // a light tick confirms the tap on phones
+      return run(() => act({ code: roomCode, playerKey, action, ...values }));
+    },
     [run, act, roomCode],
   );
 

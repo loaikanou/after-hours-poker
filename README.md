@@ -30,6 +30,7 @@ Chips and scores are for fun only — there is no wagering, real money, or cash-
 - **Turn timer** — 30 seconds per move, then the server plays a safe default. A ring counts down on the active player and your phone buzzes when it's your turn.
 - **Drop-in / drop-out** — join a poker table mid-hand and you're dealt in next hand. Leave a trick game and the server plays your seat until someone takes it over. Busted poker players can rebuy.
 - **Keyboard shortcuts** — `F` fold, `C` check/call, `R` raise.
+- **Built for phones**: the game fits on one screen with no scrolling. The table grows to fill the space the controls leave, and turning the phone sideways switches to a table-plus-side-panel layout. Touch targets are at least 44 px, notches are handled, and taps give light haptic feedback.
 
 ### Around the table
 
