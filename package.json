@@ -41,7 +41,7 @@
     "icons": "node scripts/icons.mjs && node scripts/rasterize-icons.mjs && node scripts/og-image.mjs"
   },
   "dependencies": {
-    "convex": "^1.47.0",
+    "convex": "^1.48.0",
     "qrcode": "^1.5.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
@@ -53,7 +53,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
-    "convex-test": "^0.0.63",
+    "convex-test": "^0.0.65",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
     "vitest": "^5.0.5"
