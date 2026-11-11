@@ -41,7 +41,7 @@
     "icons": "node scripts/icons.mjs && node scripts/rasterize-icons.mjs && node scripts/og-image.mjs"
   },
   "dependencies": {
-    "convex": "^1.47.0",
+    "convex": "^1.49.0",
     "qrcode": "^1.5.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
@@ -52,11 +52,11 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
-    "convex-test": "^0.0.63",
+    "@vitejs/plugin-react": "^6.2.1",
+    "convex-test": "^0.0.67",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   },
   "allowScripts": {
     "esbuild@0.27.0": true,
